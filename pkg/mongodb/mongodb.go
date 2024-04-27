@@ -2,6 +2,7 @@ package mongodb
 
 import (
 	"errors"
+	"sync"
 
 	"github.com/rafaelsouzaribeiro/apm-error-request/pkg"
 	"go.elastic.co/apm/v2"
@@ -14,4 +15,22 @@ func (conf *Configs) Send(er *pkg.Erros) {
 	e := apm.DefaultTracer().NewError(errors.New(er.Erros))
 	e.SetTransaction(tx)
 	e.Send()
+}
+
+func (confs *Configs) Alert(errs string) {
+
+	err := pkg.Erros{
+		Erros:           errs,
+		TransactionType: "request",
+	}
+
+	var wg sync.WaitGroup
+	wg.Add(1)
+
+	go func() {
+		confs.Send(&err)
+		wg.Done()
+	}()
+
+	wg.Wait()
 }
