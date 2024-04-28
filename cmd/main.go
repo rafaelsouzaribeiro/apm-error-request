@@ -1,8 +1,6 @@
 package main
 
-import (
-	"github.com/rafaelsouzaribeiro/apm-error-request/pkg/mongodb"
-)
+import mongodb "github.com/rafaelsouzaribeiro/apm-error-request/pkg/transaction-request"
 
 func main() {
 
