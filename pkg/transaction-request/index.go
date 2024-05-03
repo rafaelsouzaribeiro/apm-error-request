@@ -17,7 +17,7 @@ func (conf *Configs) Send(er *pkg.Erros) {
 	e.Send()
 }
 
-func (confs *Configs) Alert(errs string) {
+func (confs *Configs) Log(errs string) {
 
 	err := pkg.Erros{
 		Erros:           errs,

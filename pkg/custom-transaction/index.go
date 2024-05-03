@@ -22,11 +22,11 @@ func (conf *Configs) Send(er *pkg.Erros) {
 
 }
 
-func (confs *Configs) Alert(errs string) {
+func (confs *Configs) Log(errs, transactiontype string) {
 
 	err := pkg.Erros{
 		Erros:           errs,
-		TransactionType: "custom-errors",
+		TransactionType: transactiontype,
 		SpanType:        "Send",
 	}
 

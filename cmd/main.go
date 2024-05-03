@@ -9,10 +9,10 @@ func main() {
 
 	// Transaction Request
 	conf1 := mongodb.NewConfigs("mongodb1")
-	conf1.Alert("Test")
+	conf1.Log("Test")
 
 	// Custom Transaction
 	conf2 := customtransaction.NewConfigs("mongodb2")
-	conf2.Alert("server error")
+	conf2.Log("server error", "custom-errors")
 
 }
