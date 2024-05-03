@@ -1,4 +1,4 @@
-package transactionrequest
+package customtransaction
 
 type Configs struct {
 	Name string
