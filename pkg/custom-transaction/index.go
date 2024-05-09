@@ -9,9 +9,8 @@ import (
 	"go.elastic.co/apm/v2"
 )
 
-func (conf *Configs) Send(er *pkg.Erros) {
+func (conf *Configs) Send(er *pkg.Erros, ctx context.Context) {
 
-	ctx := context.Background()
 	transaction := apm.DefaultTracer().StartTransaction("Error "+conf.Name, er.TransactionType)
 	ctx = apm.ContextWithTransaction(ctx, transaction)
 	span, _ := apm.StartSpan(ctx, "Error "+conf.Name, er.SpanType)
@@ -22,19 +21,19 @@ func (conf *Configs) Send(er *pkg.Erros) {
 
 }
 
-func (confs *Configs) Log(errs, transactiontype string) {
+func (confs *Configs) Log(errs, transactiontype, SpanTYpe string, ctx context.Context) {
 
 	err := pkg.Erros{
 		Erros:           errs,
 		TransactionType: transactiontype,
-		SpanType:        "Send",
+		SpanType:        SpanTYpe,
 	}
 
 	var wg sync.WaitGroup
 	wg.Add(1)
 
 	go func() {
-		confs.Send(&err)
+		confs.Send(&err, ctx)
 		wg.Done()
 	}()
 
