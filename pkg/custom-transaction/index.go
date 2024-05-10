@@ -48,10 +48,9 @@ func (confs *Configs) Log(errs, transactiontype string) {
 }
 
 func getCallFunc() (string, int) {
-	_, _, line, _ := runtime.Caller(1)
+	pc, _, line, _ := runtime.Caller(1)
 
 	callingFunc := "Unknown"
-	pc, _, _, _ := runtime.Caller(1)
 	if pc != 0 {
 		callingFunc = runtime.FuncForPC(pc).Name()
 	}
