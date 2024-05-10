@@ -26,15 +26,7 @@ func (conf *Configs) Send(er *pkg.Erros) {
 
 func (confs *Configs) Log(errs, transactiontype string) {
 
-	// Obtém a linha onde ocorreu o erro
-	_, _, line, _ := runtime.Caller(1)
-
-	// Obtém o nome da função que chama Log
-	callingFunc := "Unknown"
-	pc, _, _, _ := runtime.Caller(1)
-	if pc != 0 {
-		callingFunc = runtime.FuncForPC(pc).Name()
-	}
+	callingFunc, line := getCallFunc()
 
 	errorText := fmt.Sprintf("Error occurred in function %s at line %d: %s", callingFunc, line, errs)
 
@@ -53,4 +45,16 @@ func (confs *Configs) Log(errs, transactiontype string) {
 	}()
 
 	wg.Wait()
+}
+
+func getCallFunc() (string, int) {
+	_, _, line, _ := runtime.Caller(1)
+
+	callingFunc := "Unknown"
+	pc, _, _, _ := runtime.Caller(1)
+	if pc != 0 {
+		callingFunc = runtime.FuncForPC(pc).Name()
+	}
+
+	return callingFunc, line
 }
