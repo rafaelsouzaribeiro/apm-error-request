@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"reflect"
 	"runtime"
 	"sync"
 
@@ -27,10 +26,14 @@ func (conf *Configs) Send(er *pkg.Erros) {
 
 func (confs *Configs) Log(errs, transactiontype string) {
 
-	_, _, line, ok := runtime.Caller(1)
+	// Obtém a linha onde ocorreu o erro
+	_, _, line, _ := runtime.Caller(1)
+
+	// Obtém o nome da função que chama Log
 	callingFunc := "Unknown"
-	if ok {
-		callingFunc = runtime.FuncForPC(reflect.ValueOf(confs.Log).Pointer()).Name()
+	pc, _, _, _ := runtime.Caller(1)
+	if pc != 0 {
+		callingFunc = runtime.FuncForPC(pc).Name()
 	}
 
 	errorText := fmt.Sprintf("Error occurred in function %s at line %d: %s", callingFunc, line, errs)
